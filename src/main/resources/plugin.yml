@@ -1,0 +1,15 @@
+name: StrawHub
+version: ${project.version}
+description: Plugin gérant le lobby du serveur.
+authors:
+  - Uicias
+  - Eclixal
+main: bzh.strawberry.strawhub.StrawHub
+api-version: 1.16
+commands:
+  ping:
+    description: Envoie son ping au joueur
+    aliases:
+      - lag
+      - lagg
+      - sfr
