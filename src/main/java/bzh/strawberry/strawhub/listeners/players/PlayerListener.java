@@ -19,7 +19,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
-
+        StrawHub.INSTANCE.getHubPlayers().add(new HubPlayer(event.getPlayer()));
 
         for (HubPlayer player : StrawHub.INSTANCE.getHubPlayers()) {
             player.sendMessage("§8[§a+§8] §7" + event.getPlayer().getName());
@@ -30,6 +30,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
+        StrawHub.INSTANCE.getHubPlayers().remove(StrawHub.INSTANCE.getHubPlayer(event.getPlayer()));
 
         for (HubPlayer player : StrawHub.INSTANCE.getHubPlayers()) {
             player.sendMessage("§8[§c-§8] §7" + event.getPlayer().getName());

@@ -4,7 +4,9 @@ import bzh.strawberry.strawhub.listeners.entity.EntityListener;
 import bzh.strawberry.strawhub.listeners.players.PlayerListener;
 import bzh.strawberry.strawhub.manager.HubPlayer;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class StrawHub extends JavaPlugin {
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         INSTANCE = this;
+        this.hubPlayers = new ArrayList<>();
 
         getLogger().info("Chargement des listeners...");
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
@@ -46,7 +49,11 @@ public class StrawHub extends JavaPlugin {
      */
 
     public List<HubPlayer> getHubPlayers() {
-        return Collections.unmodifiableList(hubPlayers);
+        return this.hubPlayers;
+    }
+
+    public HubPlayer getHubPlayer(Player player) {
+        return this.hubPlayers.stream().filter(hubPlayer -> hubPlayer.getPlayer() == player).findFirst().orElse(null);
     }
 
 }
