@@ -1,10 +1,14 @@
 package bzh.strawberry.strawhub.listeners.players;
 
 import bzh.strawberry.strawhub.StrawHub;
+import bzh.strawberry.strawhub.ast.ServerPicker;
 import bzh.strawberry.strawhub.manager.HubPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -25,6 +29,9 @@ public class PlayerListener implements Listener {
             player.sendMessage("§8[§a+§8] §7" + event.getPlayer().getName());
         }
 
+        event.getPlayer().teleport(StrawHub.INSTANCE.getSpawnLocation());
+        ServerPicker.ShowEntities(event.getPlayer());
+
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -37,5 +44,16 @@ public class PlayerListener implements Listener {
         }
 
     }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onFoodDecreasing(FoodLevelChangeEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onEntityDamage(EntityDamageEvent event) {
+        event.setCancelled(true);
+    }
+
 
 }

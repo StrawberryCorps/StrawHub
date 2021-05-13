@@ -1,14 +1,18 @@
 package bzh.strawberry.strawhub;
 
+import bzh.strawberry.strawhub.ast.ServerPicker;
 import bzh.strawberry.strawhub.listeners.entity.EntityListener;
 import bzh.strawberry.strawhub.listeners.players.PlayerListener;
 import bzh.strawberry.strawhub.manager.HubPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /*
 This file StrawHub is part of a project StrawHub.
@@ -37,14 +41,15 @@ public class StrawHub extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
         getLogger().info("Chargement des listeners... FIN");
 
+        getLogger().info("Ajout des armors stands...");
+        ServerPicker.summonArmorStands();
+        getLogger().info("Ajout des armors stands... FIN");
+
         getLogger().info("Chargement du Hub effectué en "+(System.currentTimeMillis() - tick)+" ms.");
-        getLogger().info("######################## [Survie - " + getDescription().getVersion() + "] #################################");
+        getLogger().info("######################## [StrawHub - " + getDescription().getVersion() + "] #################################");
     }
 
     /**
-     * Renvoie la liste des joueurs du hub sous la forme
-     * d'une liste NON modifiable
-     *
      * @return {@link List} of {@link HubPlayer}
      */
 
@@ -55,5 +60,15 @@ public class StrawHub extends JavaPlugin {
     public HubPlayer getHubPlayer(Player player) {
         return this.hubPlayers.stream().filter(hubPlayer -> hubPlayer.getPlayer() == player).findFirst().orElse(null);
     }
+
+    public Location getSpawnLocation(){
+        return new Location(Bukkit.getWorld("world"), 0, 22, 0);
+    }
+
+    @Override
+    public void onDisable() {
+        ServerPicker.killArmorStand();
+    }
+
 
 }
