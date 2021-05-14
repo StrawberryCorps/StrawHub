@@ -35,6 +35,7 @@ public class StrawHub extends JavaPlugin {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         INSTANCE = this;
         this.hubPlayers = new ArrayList<>();
+        this.saveDefaultConfig();
 
         getLogger().info("Chargement des listeners...");
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
@@ -42,7 +43,7 @@ public class StrawHub extends JavaPlugin {
         getLogger().info("Chargement des listeners... FIN");
 
         getLogger().info("Ajout des armors stands...");
-        ServerPicker.summonArmorStands();
+        getLogger().info("  Created " + ServerPicker.createNpc() + " NPCs");
         getLogger().info("Ajout des armors stands... FIN");
 
         getLogger().info("Chargement du Hub effectué en "+(System.currentTimeMillis() - tick)+" ms.");

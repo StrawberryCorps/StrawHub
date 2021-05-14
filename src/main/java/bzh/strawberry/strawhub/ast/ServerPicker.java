@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /*
 This file ServerPicker is part of a project StrawHub.
@@ -69,11 +70,31 @@ public class ServerPicker {
             ast.remove();
     }
 
-    public static void addNpc(String skin, String name, String action, Location location){
-        if(entityPlayers == null)
-            entityPlayers = new ArrayList<>();
+    public static int createNpc(){
+        entityPlayers = new ArrayList<>();
 
-        entityPlayers.add(MyEntityPlayer.build(skin, name, action, location));
+        List<String> serveurs = plugin.getConfig().getStringList("serveurs");
+
+        World monde = Bukkit.getWorld("world");
+        Location location = new Location(monde, 0, 0, 0);
+
+        for (String s : serveurs) {
+
+            String name = plugin.getConfig().getString("armorstand." + s + ".name");
+            UUID skin = UUID.fromString(plugin.getConfig().getString("armorstand." + s + ".skin"));
+            String action = plugin.getConfig().getString("armorstand." + s + ".action");
+            location.setX(plugin.getConfig().getDouble("armorstand." + s + ".x"));
+            location.setY(plugin.getConfig().getDouble("armorstand." + s + ".y"));
+            location.setZ(plugin.getConfig().getDouble("armorstand." + s + ".z"));
+            location.setYaw((float) plugin.getConfig().getDouble("armorstand." + s + ".yaw"));
+            location.setPitch((float) plugin.getConfig().getDouble("armorstand." + s + ".pitch"));
+
+            entityPlayers.add(MyEntityPlayer.build(skin, name, action, location));
+
+        }
+
+
+        return entityPlayers.size();
     }
 
     //action performed in the MyEntityPlayer class to be easier to maintain to next versions

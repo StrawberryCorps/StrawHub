@@ -3,6 +3,7 @@ package bzh.strawberry.strawhub.listeners.entity;
 import bzh.strawberry.strawhub.StrawHub;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.minecraft.server.v1_16_R3.EntityPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,29 +23,24 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInteract(PlayerInteractAtEntityEvent event) {
         Player player = event.getPlayer();
-        if (!(event.getRightClicked() instanceof ArmorStand))
+        if (!(event.getRightClicked() instanceof EntityPlayer))
             return;
-        ArmorStand ast = (ArmorStand) event.getRightClicked();
+        EntityPlayer entity = (EntityPlayer) event.getRightClicked();
         event.setCancelled(true);
 
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
 
-        if (ast.getCustomName().toLowerCase().contains("decimation"))
+        if (entity.getCustomName().getString().toLowerCase().contains("decimation"))
             out.writeUTF("Decimation");
-        else if (ast.getCustomName().toLowerCase().contains("survie"))
+        else if (entity.getCustomName().getString().toLowerCase().contains("survie"))
             out.writeUTF("Decimation");
-        else if (ast.getCustomName().toLowerCase().contains("auth"))
+        else if (entity.getCustomName().getString().toLowerCase().contains("auth"))
             out.writeUTF("Login");
         else
             return;
 
         player.sendPluginMessage(StrawHub.INSTANCE, "BungeeCord", out.toByteArray());
-
-        if (event.getRightClicked() instanceof ArmorStand) {
-            ArmorStand armorStand = (ArmorStand) event.getRightClicked();
-
-        }
 
     }
 

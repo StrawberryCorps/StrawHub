@@ -5,22 +5,28 @@ serveurs:
 armorstand:
   survie:
     name: Survie
+    skin: 94ae5b55-8b29-4e41-822c-236aac87fcbf
+    action : survie
     x: -6.5
-    y: 22
+    y: 20
     z: 0.5
     yaw: -90.0
     pitch: 0.0
   decimation:
     name: Décimation
+    skin: d11301c0-c842-4e2f-af1e-382ad85fe3c4
+    action: decimation
     x: 6.5
-    y: 22
+    y: 20
     z: 0.5
     yaw: 90.0
     pitch: 0.0
   lobby:
     name: Lobby
+    skin: 09186f54-9910-418e-90f3-d7772e731f73
+    action : lobby
     x: 0.5
-    y: 22
+    y: 20
     z: 6.5
     yaw: 90.0
     pitch: 0.0

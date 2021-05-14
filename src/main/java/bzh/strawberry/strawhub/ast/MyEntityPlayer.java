@@ -38,19 +38,24 @@ public class MyEntityPlayer extends EntityPlayer {
         this.location = location;
     }
 
-    public static MyEntityPlayer build(String skin_voulu, String name, String action, Location location) {
+    public static MyEntityPlayer build(UUID skin_voulu, String name, String action, Location location) {
         MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer world = ((CraftWorld) Bukkit.getWorld("world")).getHandle();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), skin_voulu);
-        Player player = (Player) Bukkit.getOfflinePlayer(skin_voulu);
+        GameProfile profile = new GameProfile(UUID.randomUUID(), name);
 
         try {
-            HttpsURLConnection connection = (HttpsURLConnection) new URL(String.format("https://sessionserver.mojang.com/session/minecraft/profile/%s?unsigned=false",
-                    UUIDTypeAdapter.fromUUID(player.getUniqueId()))).openConnection();
+            System.out.println("skin voulu : (uuid)" + skin_voulu.toString());
+            System.out.printf("https://sessionserver.mojang.com/session/minecraft/profile/%s?unsigned=false\n", skin_voulu.toString());
+            HttpsURLConnection connection = (HttpsURLConnection) new URL(String.format("https://sessionserver.mojang.com/session/minecraft/profile/%s?unsigned=false", skin_voulu.toString())).openConnection();
             if (connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                String reply = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-                String skin = reply.split("\"value\":\"")[1].split("\"")[0];
-                String signature = reply.split("\"signature\":\"")[1].split("\"")[0];
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String lecture, reply = "";
+                while((lecture = bufferedReader.readLine()) != null){
+                    reply = reply.concat(lecture);
+                }
+
+                String skin = reply.split("value")[1].split("\"")[2];
+                String signature = reply.split("signature")[1].split("\"")[2];
 
                 profile.getProperties().put("textures", new Property("textures", skin, signature));
             } else {
@@ -60,13 +65,14 @@ public class MyEntityPlayer extends EntityPlayer {
             malformedURLException.printStackTrace();
         }
 
-        IChatBaseComponent customName = new ChatMessage("name");
+        IChatBaseComponent customName = new ChatMessage(name);
 
         MyEntityPlayer npc = new MyEntityPlayer(server, world, profile, new PlayerInteractManager(world), action, location);
         npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         npc.setCustomName(customName);
         npc.setCustomNameVisible(true);
 
+        StrawHub.INSTANCE.getLogger().info("Created : " + npc);
         return npc;
     }
 
@@ -82,6 +88,11 @@ public class MyEntityPlayer extends EntityPlayer {
         PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, this));
         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(this));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[NPC: %s, Skin:%s, Action: %s @%s]", name, skin, action, location.toString());
     }
 
 }
