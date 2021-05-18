@@ -22,6 +22,9 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInteract(PlayerInteractAtEntityEvent event) {
+
+        System.out.println("INTERACTS");
+
         Player player = event.getPlayer();
         if (!(event.getRightClicked() instanceof EntityPlayer))
             return;
@@ -43,6 +46,8 @@ public class EntityListener implements Listener {
         player.sendPluginMessage(StrawHub.INSTANCE, "BungeeCord", out.toByteArray());
 
     }
+
+    //todo add listener pour putain de NPC
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onSpawn(EntitySpawnEvent event) {

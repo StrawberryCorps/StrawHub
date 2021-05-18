@@ -1,6 +1,7 @@
 package bzh.strawberry.strawhub;
 
 import bzh.strawberry.strawhub.ast.ServerPicker;
+import bzh.strawberry.strawhub.listeners.entity.CustomEntityListener;
 import bzh.strawberry.strawhub.listeners.entity.EntityListener;
 import bzh.strawberry.strawhub.listeners.players.PlayerListener;
 import bzh.strawberry.strawhub.manager.HubPlayer;
@@ -40,6 +41,7 @@ public class StrawHub extends JavaPlugin {
         getLogger().info("Chargement des listeners...");
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
+        getServer().getPluginManager().registerEvents(new CustomEntityListener(), this);
         getLogger().info("Chargement des listeners... FIN");
 
         getLogger().info("Ajout des armors stands...");
@@ -68,7 +70,7 @@ public class StrawHub extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        ServerPicker.killArmorStand();
+        ServerPicker.killNpc();
     }
 
 

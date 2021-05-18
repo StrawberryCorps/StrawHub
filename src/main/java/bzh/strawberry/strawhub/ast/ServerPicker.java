@@ -65,9 +65,11 @@ public class ServerPicker {
         }
     }
 
-    public static void killArmorStand(){
-        for(ArmorStand ast : armorStands)
-            ast.remove();
+    public static void killNpc(){
+        for(MyEntityPlayer npc : entityPlayers){
+            npc.killEntity();
+        }
+
     }
 
     public static int createNpc(){
@@ -92,7 +94,6 @@ public class ServerPicker {
             entityPlayers.add(MyEntityPlayer.build(skin, name, action, location));
 
         }
-
 
         return entityPlayers.size();
     }
